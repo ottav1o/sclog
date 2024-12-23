@@ -6,9 +6,9 @@
 
 #define __attr_nonnull __attribute__((nonnull))
 
-enum {
-    SCLOG_HANDLER_DEFAULT
-};
+// enum {
+//     SCLOG_HANDLER_DEFAULT
+// };
 
 typedef enum {
     INFO,
