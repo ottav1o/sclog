@@ -49,32 +49,32 @@ int log_vwritef(FILE *out, const char *id, ErrType type, const char *fmt, va_lis
     switch (type)
     {
         case INFO:
-            fprintf(out, "[INFO] (%s): \"%s\" - %s, at line %d: ", id, timestamp, __FILE__, __LINE__);
+            fprintf(out, "[INFO] (%s): \"%s\" - %s: ", id, timestamp);
             vfprintf(out, fmt, args);
 
             if (echo)
             {
-                fprintf(stderr, "[INFO] (%s): \"%s\" - %s, at line %d: ", id, timestamp, __FILE__, __LINE__);
+                fprintf(stderr, "[INFO] (%s): \"%s\" - %s: ", id, timestamp);
                 vfprintf(stderr, fmt, copy);
             }
             break;
         
         case ERROR:
-            fprintf(out, "[ERROR] (%s): \"%s\" - %s, at line %d: ", id, timestamp, __FILE__, __LINE__);
+            fprintf(out, "[ERROR] (%s): \"%s\" - %s: ", id, timestamp);
             vfprintf(out, fmt, args);
 
             if (echo)
             {
-                fprintf(stderr, "[ERROR] (%s): \"%s\" - %s, at line %d: ", id, timestamp, __FILE__, __LINE__);
+                fprintf(stderr, "[ERROR] (%s): \"%s\" - %s: ", id, timestamp);
                 vfprintf(stderr, fmt, copy);
             }
             break;
 
         case CRITICAL:
-            fprintf(out, "[CRITICAL] (%s): \"%s\" - %s, at line %d: ", id, timestamp, __FILE__, __LINE__);
+            fprintf(out, "[CRITICAL] (%s): \"%s\" - %s: ", id, timestamp);
             vfprintf(out, fmt, args);
 
-            fprintf(stderr, "[CRITICAL] (%s): \"%s\" - %s, at line %d: ", id, timestamp, __FILE__, __LINE__);
+            fprintf(stderr, "[CRITICAL] (%s): \"%s\" - %s: ", id, timestamp);
             vfprintf(stderr, fmt, copy);
 
             fflush(out);
