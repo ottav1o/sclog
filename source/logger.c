@@ -5,11 +5,13 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
 
 bool echo = false;
+struct Logger *default_handle = NULL;
 
 /* Open a new stream `path` with mode `w` and return the log handle.  */
-__attr_nonnull
+__attribute__((nonnull))
 struct Logger * log_init(const char *path, const char *identifier)
 {
     FILE *stream = fopen(path, "w");
@@ -33,7 +35,7 @@ struct Logger * log_init(const char *path, const char *identifier)
 }
 
 /* Writes message `*fmt` + `args` to `out`. Similar to `fprintf` */
-__attr_nonnull
+__attribute__((nonnull))
 int log_vwritef(FILE *out, const char *id, ErrType type, const char *fmt, va_list args)
 {
     time_t now;
@@ -100,42 +102,52 @@ int log_vwritef(FILE *out, const char *id, ErrType type, const char *fmt, va_lis
 }
 
 /* Call `log_vwritef` to write a message with format equal to `"[INFO]: [TIMESTAMP] - "`fmt` `args`""` */
-__attr_nonnull
-int log_info(struct Logger *handle, const char *fmt, ...)
+__attribute__((nonnull(2)))
+void log_info(struct Logger *handle, const char *fmt, ...)
 {
+    if (!handle)
+        handle = default_handle;
+
+    assert(handle && "NULL Handle.");
+
     va_list args;
     va_start(args, fmt);
 
     log_vwritef(handle->lstream, handle->identifier, INFO, fmt, args);
-
-    return 0;
 }    
 
 /* Call `log_vwritef` to write a message with format equal to `"[ERROR]: [TIMESTAMP] - "`fmt` `args`" */
-__attr_nonnull
-int log_err(struct Logger *handle, const char *fmt, ...)
+__attribute__((nonnull(2)))
+void log_err(struct Logger *handle, const char *fmt, ...)
 {
+
+assert(handle && "NULL Handle.");
+
     va_list args;
     va_start(args, fmt);
 
     log_vwritef(handle->lstream, handle->identifier, ERROR, fmt, args);
-
-    return 0;
-}    
+}
 
 /* Call `log_vwritef` to write a message with format equal to `"[CRITICAL]: [TIMESTAMP] - "`fmt` `args`"". PRINT to STDERR and `stdlog` and exit the executation with return code 1.` */
-__attr_nonnull
+__attribute__((nonnull(2)))
 void log_critical(struct Logger *handle, const char *fmt, ...)
 {
+
+assert(handle && "NULL Handle.");
+
     va_list args;
     va_start(args, fmt);
 
     log_vwritef(handle->lstream, handle->identifier, CRITICAL, fmt, args);
 }
 
-__attr_nonnull
+__attribute__((nonnull(2)))
 void log_raw(struct Logger *handle, const char *fmt, ...)
 {
+
+assert(handle && "NULL Handle.");
+
     va_list args;
     va_start(args, fmt);
 
@@ -154,7 +166,7 @@ void sclog_disable_echoing(void)
     printf("SCLOG: Echoing is disabled.\n");
 }
 
-__attr_nonnull
+__attribute__((nonnull))
 void sclog_kill_handle(struct Logger *handler)
 {
     log_info(handler, "This handler is being killed.\n");
@@ -163,4 +175,9 @@ void sclog_kill_handle(struct Logger *handler)
         fclose(handler->lstream);
     
     free(handler);
+}
+__attribute__((nonnull))
+void sclog_set_default_handle(struct Logger *handle)
+{
+    default_handle = handle;
 }
