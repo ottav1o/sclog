@@ -49,32 +49,32 @@ int log_vwritef(FILE *out, const char *id, ErrType type, const char *fmt, va_lis
     switch (type)
     {
         case INFO:
-            fprintf(out, "[INFO] (%s): \"%s\" - %s: ", id, timestamp);
+            fprintf(out, "[INFO] (%s): \"%s\" - ", id, timestamp);
             vfprintf(out, fmt, args);
 
             if (echo)
             {
-                fprintf(stderr, "[INFO] (%s): \"%s\" - %s: ", id, timestamp);
+                fprintf(stderr, "[INFO] (%s): \"%s\" - ", id, timestamp);
                 vfprintf(stderr, fmt, copy);
             }
             break;
         
         case ERROR:
-            fprintf(out, "[ERROR] (%s): \"%s\" - %s: ", id, timestamp);
+            fprintf(out, "[ERROR] (%s): \"%s\" - ", id, timestamp);
             vfprintf(out, fmt, args);
 
             if (echo)
             {
-                fprintf(stderr, "[ERROR] (%s): \"%s\" - %s: ", id, timestamp);
+                fprintf(stderr, "[ERROR] (%s): \"%s\" - ", id, timestamp);
                 vfprintf(stderr, fmt, copy);
             }
             break;
 
         case CRITICAL:
-            fprintf(out, "[CRITICAL] (%s): \"%s\" - %s: ", id, timestamp);
+            fprintf(out, "[CRITICAL] (%s): \"%s\" - ", id, timestamp);
             vfprintf(out, fmt, args);
 
-            fprintf(stderr, "[CRITICAL] (%s): \"%s\" - %s: ", id, timestamp);
+            fprintf(stderr, "[CRITICAL] (%s): \"%s\" - ", id, timestamp);
             vfprintf(stderr, fmt, copy);
 
             fflush(out);
