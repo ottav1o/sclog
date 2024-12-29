@@ -107,7 +107,7 @@ void log_info(struct Logger *handle, const char *fmt, ...)
 {
     if (!handle)
         handle = default_handle;
-
+        
     assert(handle && "NULL Handle.");
 
     va_list args;
@@ -120,8 +120,10 @@ void log_info(struct Logger *handle, const char *fmt, ...)
 __attribute__((nonnull(2)))
 void log_err(struct Logger *handle, const char *fmt, ...)
 {
-
-assert(handle && "NULL Handle.");
+    if (!handle)
+        handle = default_handle;
+        
+    assert(handle && "NULL Handle.");
 
     va_list args;
     va_start(args, fmt);
@@ -133,8 +135,10 @@ assert(handle && "NULL Handle.");
 __attribute__((nonnull(2)))
 void log_critical(struct Logger *handle, const char *fmt, ...)
 {
-
-assert(handle && "NULL Handle.");
+    if (!handle)
+        handle = default_handle;
+        
+    assert(handle && "NULL Handle.");
 
     va_list args;
     va_start(args, fmt);
@@ -145,8 +149,10 @@ assert(handle && "NULL Handle.");
 __attribute__((nonnull(2)))
 void log_raw(struct Logger *handle, const char *fmt, ...)
 {
-
-assert(handle && "NULL Handle.");
+    if (!handle)
+        handle = default_handle;
+        
+    assert(handle && "NULL Handle.");
 
     va_list args;
     va_start(args, fmt);
@@ -157,20 +163,16 @@ assert(handle && "NULL Handle.");
 void sclog_enable_echoing(void)
 {
     echo = true;
-    printf("SCLOG: Echoing is enabled.\n");
 }
 
 void sclog_disable_echoing(void)
 {
     echo = false;
-    printf("SCLOG: Echoing is disabled.\n");
 }
 
 __attribute__((nonnull))
 void sclog_kill_handle(struct Logger *handler)
 {
-    log_info(handler, "This handler is being killed.\n");
-
     if (handler->lstream)
         fclose(handler->lstream);
     
