@@ -13,7 +13,7 @@ CFILES  = $(wildcard $(SRC)/*.c)
 
 OBJS = $(CFILES:$(SRC)/%.c=$(BUILD_DIR)/%.o)
 
-all: $(TARGET) install
+all: $(TARGET) 
 
 build: $(TARGET)
 
